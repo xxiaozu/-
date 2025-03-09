@@ -1,0 +1,39 @@
+module bcd80(clk, Rst_n, cnt, count, x, Cin)
+
+input clk;
+input Rst_n;
+input Cin;
+output reg [6:0]count;
+output x;
+output cnt;
+
+always @(posedge clk or negedge Rst_n)
+begin
+	if(!Rst_n)
+	count <= 0;
+	else begin
+		if(count[3:0] == 9) begin
+			count[3:0] <= 0;
+			if(count[6:4] == 7)
+				count[6:4] <= 0;
+				else
+					count[6:4] = count[6:4] + 1;
+				end
+			else
+				count[3:0] = count[3:0] + 1;
+			end
+end
+
+always @(posedge clk or negedge Rst_n)
+begin
+	if(!Rst_n)
+	cnt <= 0;
+	else if(Cin == 1 && count == 6'h79)
+	cnt <= 1;
+	else
+	cnt <= 0;
+	end
+	
+	assign x = cnt;
+	
+endmodule

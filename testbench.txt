@@ -1,0 +1,28 @@
+module jishufenpin_tb;
+    reg clk, Rst_n, Cin;
+    wire [6:0] count;
+    wire x;
+    wire cnt;
+
+    jishufenpin dut(clk, Rst_n, Cin, count, x, cnt);
+
+    initial begin
+        clk = 0;
+        Rst_n = 0;
+        Cin = 0;
+        #100;
+
+        Rst_n = 1;
+        repeat(20) begin   // 测试20次计数器模块
+            #25;
+            Cin = ~Cin;   // 预设位置：循环设置进位信号
+        end
+
+        #100;
+        $finish;
+    end
+
+    always begin
+        #12.5 clk = ~clk;  // 开始时钟，并每12.5个时间单位执行一次时钟跳变
+    end
+endmodule
